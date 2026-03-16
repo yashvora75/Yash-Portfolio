@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yash Vora — Algorithmic & Quantitative Trader</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  /* Backgrounds — dark modern grey */
+  --bg:       #111114;
+  --bg2:      #18181d;
+  --bg3:      #1e1e25;
+  --bg4:      #242430;
+  --surface:  #1c1c23;
+  --surface2: #222229;
+
+  /* Lilac palette — muted, not shiny */
+  --lilac:    #a78bca;
+  --lilac2:   #b99ed8;
+  --lilac3:   #8b6db5;
+  --lilac-lt: rgba(167,139,202,0.12);
+  --lilac-md: rgba(167,139,202,0.20);
+  --lilac-glow: rgba(167,139,202,0.08);
+
+  /* Text */
+  --white:    #f5f5f8;
+  --white2:   #e8e8ee;
+  --muted:    #8a8a98;
+  --muted2:   #5e5e6e;
+
+  /* Borders */
+  --border:   rgba(255,255,255,0.06);
+  --border2:  rgba(255,255,255,0.10);
+  --border-l: rgba(167,139,202,0.22);
+
+  --r: 16px;
+  --shadow: 0 4px 40px rgba(0,0,0,0.35);
+  --shadow2: 0 8px 60px rgba(0,0,0,0.5);
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+#cd, #cr {
+  position: fixed; pointer-events: none; z-index: 9999;
+  border-radius: 50%; transform: translate(-50%,-50%);
+}
+#cd { width: 6px; height: 6px; background: var(--lilac); }
+#cr {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(167,139,202,0.5);
+  transition: width .22s, height .22s, border-color .22s;
+}
+body.lh #cr { width: 50px; height: 50px; border-color: var(--lilac); }
+
+/* ── SCROLL BAR ── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--lilac3); border-radius: 3px; }
+
+/* ── PROGRESS ── */
+#prog {
+  position: fixed; top: 0; left: 0; height: 2px; z-index: 300;
+  background: linear-gradient(90deg, var(--lilac3), var(--lilac2));
+  width: 0%;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 24px 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(17,17,20,0.75);
+  backdrop-filter: blur(20px) saturate(1.3);
+  border-bottom: 1px solid var(--border);
+  transition: padding .35s, background .35s;
+}
+nav.sc { padding: 16px 64px; background: rgba(17,17,20,0.92); }
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.45rem; font-weight: 600;
+  color: var(--white); text-decoration: none; letter-spacing: .03em;
+}
+.nav-logo span { color: var(--lilac); }
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+  font-size: .8rem; font-weight: 400; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  transition: color .2s; position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+  height: 1px; background: var(--lilac);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-cta {
+  font-size: .78rem; font-weight: 500; letter-spacing: .08em;
+  text-transform: uppercase; padding: 10px 24px;
+  border-radius: 100px;
+  background: var(--lilac-lt); border: 1px solid var(--border-l);
+  color: var(--lilac2); text-decoration: none;
+  transition: background .25s, color .25s, transform .2s;
+}
+.nav-cta:hover {
+  background: var(--lilac); color: var(--bg);
+  transform: translateY(-1px);
+}
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh; display: flex; align-items: center;
+  padding: 130px 64px 90px; position: relative; overflow: hidden;
+}
+/* Radial glow blobs — subtle */
+.glow {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  filter: blur(80px);
+}
+.g1 {
+  width: 560px; height: 560px;
+  background: radial-gradient(circle, rgba(139,109,181,0.18) 0%, transparent 70%);
+  top: -80px; right: -80px;
+  animation: gf 14s ease-in-out infinite;
+}
+.g2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(167,139,202,0.10) 0%, transparent 70%);
+  bottom: -60px; left: 60px;
+  animation: gf 18s ease-in-out infinite reverse;
+}
+.g3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(100,80,150,0.10) 0%, transparent 70%);
+  top: 40%; left: 38%;
+  animation: gf 22s ease-in-out infinite;
+}
+@keyframes gf {
+  0%,100% { transform: translate(0,0) scale(1); }
+  40% { transform: translate(28px,-18px) scale(1.05); }
+  70% { transform: translate(-16px,12px) scale(.96); }
+}
+
+.hero-in {
+  display: grid; grid-template-columns: 1.15fr 1fr; gap: 72px;
+  align-items: center; position: relative; z-index: 1;
+  max-width: 1160px; margin: auto; width: 100%;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 5px 14px; border-radius: 100px;
+  background: var(--lilac-lt); border: 1px solid var(--border-l);
+  font-size: .72rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--lilac2); margin-bottom: 30px;
+  animation: fu .65s ease both;
+}
+.tdot { width: 6px; height: 6px; border-radius: 50%; background: var(--lilac); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(.7)} }
+
+.hero-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(4.2rem, 7.5vw, 8rem);
+  font-weight: 300; line-height: .92; letter-spacing: -.02em;
+  animation: fu .65s .07s ease both;
+}
+.hero-name em {
+  font-style: italic; font-weight: 300;
+  color: var(--lilac2);
+}
+.hero-sub {
+  font-size: .95rem; font-weight: 400; color: var(--muted);
+  letter-spacing: .04em; margin: 22px 0 30px;
+  animation: fu .65s .14s ease both;
+}
+.hero-rule { width: 48px; height: 1px; background: var(--muted2); margin-bottom: 26px; animation: fu .65s .18s ease both; }
+.hero-desc {
+  font-size: 1rem; line-height: 1.85; color: var(--muted);
+  max-width: 500px; animation: fu .65s .22s ease both;
+}
+.hero-desc strong { color: var(--white2); font-weight: 500; }
+.hero-btns { display: flex; gap: 12px; margin-top: 40px; animation: fu .65s .3s ease both; }
+.btn-p {
+  padding: 13px 30px; border-radius: 100px;
+  background: var(--lilac); color: var(--bg);
+  font-size: .83rem; font-weight: 600; letter-spacing: .04em;
+  text-decoration: none;
+  transition: background .25s, transform .2s, box-shadow .25s;
+}
+.btn-p:hover { background: var(--lilac2); transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(139,109,181,0.35); }
+.btn-g {
+  padding: 13px 30px; border-radius: 100px;
+  border: 1px solid var(--border2); color: var(--white2);
+  font-size: .83rem; font-weight: 400; letter-spacing: .04em;
+  text-decoration: none; background: transparent;
+  transition: border-color .25s, background .25s, transform .2s;
+}
+.btn-g:hover { border-color: var(--lilac); background: var(--lilac-lt); transform: translateY(-2px); }
+
+/* HERO CARD */
+.hcard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px; padding: 32px;
+  animation: fu .65s .18s ease both;
+  position: relative; overflow: hidden;
+}
+.hcard::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--lilac3), var(--lilac), var(--lilac2));
+}
+.card-lbl {
+  font-size: .7rem; font-weight: 500; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--muted2); margin-bottom: 20px;
+}
+.stat-g { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+.sbox {
+  background: var(--bg3); border-radius: 14px; padding: 18px 16px;
+  border: 1px solid var(--border);
+  transition: border-color .25s, transform .25s;
+}
+.sbox:hover { border-color: var(--border-l); transform: translateY(-2px); }
+.sval {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.1rem; font-weight: 600; color: var(--white); line-height: 1;
+}
+.sval em { font-style: normal; font-size: 1rem; color: var(--lilac); }
+.slbl { font-size: .68rem; color: var(--muted2); margin-top: 5px; letter-spacing: .04em; }
+
+.live-pill {
+  display: flex; align-items: center; gap: 9px;
+  padding: 10px 16px; background: rgba(139,109,181,0.08);
+  border: 1px solid rgba(139,109,181,0.18); border-radius: 12px; margin-bottom: 18px;
+}
+.ldot { width: 7px; height: 7px; border-radius: 50%; background: #6dbf87; animation: pulse 2s infinite; }
+.ltxt { font-size: .76rem; color: #6dbf87; font-weight: 500; }
+
+/* ── MARQUEE ── */
+.mqwrap {
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  background: var(--bg2); overflow: hidden; padding: 13px 0;
+}
+.mqtrack { display: flex; width: max-content; animation: mq 30s linear infinite; }
+.mqitem {
+  font-size: .72rem; font-weight: 400; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted2); white-space: nowrap; padding: 0 28px;
+  display: flex; align-items: center; gap: 28px;
+}
+.mqsep { width: 3px; height: 3px; border-radius: 50%; background: var(--lilac3); opacity: .7; }
+@keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ── SHARED ── */
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 40px; }
+.stag {
+  display: inline-block; font-size: .7rem; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--lilac);
+  margin-bottom: 14px;
+}
+.sh {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 4.2vw, 4rem);
+  font-weight: 300; line-height: 1.08; letter-spacing: -.015em;
+  color: var(--white);
+}
+.sh em { font-style: italic; color: var(--lilac2); }
+
+/* ── ABOUT ── */
+#about { padding: 120px 0; background: var(--bg); }
+.agrid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 56px; }
+.atext p { font-size: 1rem; line-height: 1.9; color: var(--muted); margin-bottom: 18px; }
+.atext strong { color: var(--white2); font-weight: 500; }
+.achips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.chip {
+  padding: 5px 15px; border-radius: 100px; font-size: .78rem; font-weight: 400;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--muted); transition: all .2s;
+}
+.chip:hover { border-color: var(--border-l); color: var(--lilac2); background: var(--lilac-lt); }
+.scol { display: flex; flex-direction: column; gap: 22px; }
+.sti-top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.sn { font-size: .88rem; font-weight: 400; color: var(--white2); }
+.sp { font-size: .78rem; color: var(--muted2); }
+.btrack { height: 2px; background: var(--bg4); border-radius: 2px; overflow: hidden; }
+.bfill {
+  height: 100%; border-radius: 2px;
+  background: linear-gradient(90deg, var(--lilac3), var(--lilac));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 1.4s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── EXPERIENCE ── */
+#experience { padding: 120px 0; background: var(--bg2); }
+.egrid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; }
+.ecard {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 34px;
+  position: relative; overflow: hidden;
+  transition: border-color .3s, transform .3s, box-shadow .3s;
+}
+.ecard::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(180deg, var(--lilac3), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.ecard:hover { border-color: var(--border-l); transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,.3); }
+.ecard:hover::before { opacity: 1; }
+.ecard.feat { grid-column: 1/-1; }
+.ecard.feat .ein { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.eper { font-size: .7rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--lilac); margin-bottom: 10px; }
+.eco {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.75rem; font-weight: 600; color: var(--white); line-height: 1.1; margin-bottom: 4px;
+}
+.erole { font-size: .85rem; color: var(--muted2); margin-bottom: 18px; }
+.ebadge {
+  display: inline-block; padding: 3px 10px; border-radius: 5px;
+  background: var(--lilac-lt); border: 1px solid var(--border-l);
+  font-size: .66rem; letter-spacing: .09em; color: var(--lilac2); margin-bottom: 18px;
+}
+.eps { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.eps li { font-size: .86rem; line-height: 1.75; color: var(--muted);
+  padding-left: 14px; position: relative; }
+.eps li::before { content: '·'; position: absolute; left: 0;
+  color: var(--lilac); font-size: 1.1rem; line-height: 1.5; }
+.eps li strong { color: var(--white2); font-weight: 500; }
+
+/* ── ALGORITHMS ── */
+#algorithms { padding: 120px 0; background: var(--bg); }
+.algrid { display: grid; grid-template-columns: repeat(auto-fill,minmax(300px,1fr)); gap: 18px; margin-top: 56px; }
+.alcard {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 26px;
+  position: relative; overflow: hidden;
+  transition: border-color .3s, transform .3s, box-shadow .3s;
+  perspective: 600px;
+}
+.alcard::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--lilac), transparent);
+  transform: scaleX(0); transition: transform .4s;
+}
+.alcard:hover { border-color: var(--border-l); transform: translateY(-3px);
+  box-shadow: 0 10px 40px rgba(0,0,0,.3); }
+.alcard:hover::after { transform: scaleX(1); }
+.alnum { font-size: .66rem; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; color: var(--lilac); margin-bottom: 9px; }
+.alname { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 600; color: var(--white); margin-bottom: 9px; }
+.aldesc { font-size: .83rem; line-height: 1.75; color: var(--muted); }
+.altag {
+  display: inline-block; margin-top: 15px; padding: 3px 11px; border-radius: 100px;
+  border: 1px solid var(--border); font-size: .65rem; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted2);
+  transition: all .2s;
+}
+.alcard:hover .altag { border-color: var(--border-l); color: var(--lilac2); background: var(--lilac-lt); }
+
+/* ── PROJECTS ── */
+#projects { padding: 120px 0; background: var(--bg2); }
+.pgrid { display: grid; grid-template-columns: repeat(auto-fill,minmax(255px,1fr)); gap: 18px; margin-top: 56px; }
+.pcard {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 26px;
+  transition: border-color .3s, transform .3s, box-shadow .3s;
+}
+.pcard:hover { border-color: var(--border-l); transform: translateY(-3px); box-shadow: 0 10px 40px rgba(0,0,0,.3); }
+.pico {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--bg3); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.15rem; margin-bottom: 15px;
+}
+.pname { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 600; color: var(--white); margin-bottom: 7px; }
+.pdesc { font-size: .83rem; line-height: 1.75; color: var(--muted); }
+.ptechs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 15px; }
+.ptechs span {
+  padding: 3px 9px; border-radius: 5px;
+  background: var(--bg3); border: 1px solid var(--border);
+  font-size: .66rem; color: var(--muted2); letter-spacing: .04em;
+}
+
+/* ── SKILLS ── */
+#skills { padding: 120px 0; background: var(--bg); }
+.skcats { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 56px; }
+.skcat {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 30px;
+  transition: border-color .3s;
+}
+.skcat:hover { border-color: var(--border-l); }
+.ctitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-weight: 600; color: var(--white);
+  margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+}
+.pills { display: flex; flex-wrap: wrap; gap: 7px; }
+.pill {
+  padding: 5px 13px; border-radius: 100px;
+  border: 1px solid var(--border); font-size: .8rem;
+  color: var(--muted); transition: all .2s;
+}
+.pill:hover { border-color: var(--border-l); color: var(--lilac2); background: var(--lilac-lt); transform: translateY(-1px); }
+
+/* ── CERTS ── */
+#certifications { padding: 100px 0; background: var(--bg2); }
+.cgrid { display: grid; grid-template-columns: repeat(auto-fill,minmax(245px,1fr)); gap: 14px; margin-top: 48px; }
+.ccard {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px;
+  transition: border-color .25s, transform .25s;
+}
+.ccard:hover { border-color: var(--border-l); transform: translateY(-2px); }
+.cico {
+  width: 38px; height: 38px; flex-shrink: 0; border-radius: 10px;
+  background: var(--lilac-lt); border: 1px solid var(--border-l);
+  display: flex; align-items: center; justify-content: center; font-size: 1rem;
+}
+.cname { font-size: .88rem; font-weight: 500; color: var(--white2); margin-bottom: 3px; }
+.cdate { font-size: .72rem; color: var(--muted2); }
+
+/* ── CONTACT ── */
+#contact { padding: 140px 0; background: var(--bg); position: relative; overflow: hidden; }
+.cbg1 {
+  position: absolute; border-radius: 50%; pointer-events: none; filter: blur(100px);
+  width: 500px; height: 500px; top: -100px; right: -80px;
+  background: radial-gradient(circle, rgba(139,109,181,0.14), transparent 70%);
+}
+.cbg2 {
+  position: absolute; border-radius: 50%; pointer-events: none; filter: blur(80px);
+  width: 350px; height: 350px; bottom: -60px; left: 40px;
+  background: radial-gradient(circle, rgba(100,80,150,0.10), transparent 70%);
+}
+.cin { position: relative; z-index: 1; text-align: center; }
+.ctag {
+  display: inline-block; font-size: .7rem; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--lilac);
+  margin-bottom: 18px;
+}
+.ch {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.2rem, 6.5vw, 6.5rem);
+  font-weight: 300; line-height: .95; letter-spacing: -.02em;
+  color: var(--white); margin-bottom: 22px;
+}
+.ch em { font-style: italic; color: var(--lilac2); }
+.csub { font-size: 1rem; color: var(--muted); max-width: 440px; margin: 0 auto 50px; line-height: 1.8; }
+.crow { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+.clink {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 26px; border-radius: 100px;
+  border: 1px solid var(--border); background: var(--surface);
+  font-size: .85rem; color: var(--white2); text-decoration: none;
+  transition: all .25s;
+}
+.clink:hover {
+  background: var(--lilac); border-color: var(--lilac);
+  color: var(--bg); transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(139,109,181,.3);
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 26px 64px; background: var(--bg2);
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.fc { font-size: .75rem; color: var(--muted2); }
+.fr { font-size: .75rem; color: var(--muted2); }
+.fr span { color: var(--lilac); }
+
+/* ── ANIMATIONS ── */
+@keyframes fu { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+.rv  { opacity:0; transform:translateY(26px);  transition:opacity .65s ease,transform .65s ease; }
+.rvl { opacity:0; transform:translateX(-26px); transition:opacity .65s ease,transform .65s ease; }
+.rvr { opacity:0; transform:translateX(26px);  transition:opacity .65s ease,transform .65s ease; }
+.rv.in,.rvl.in,.rvr.in { opacity:1; transform:none; }
+
+/* ── MOBILE ── */
+@media(max-width:960px) {
+  nav { padding:18px 24px; } nav.sc { padding:12px 24px; } .nav-links { display:none; }
+  #hero { padding:100px 24px 60px; } .hero-in { grid-template-columns:1fr; gap:40px; }
+  .hcard { display:none; } .hero-name { font-size:3.8rem; }
+  .agrid,.egrid,.skcats { grid-template-columns:1fr; }
+  .ecard.feat .ein { grid-template-columns:1fr; }
+  .wrap { padding:0 24px; }
+  #about,#experience,#algorithms,#projects,#skills,#certifications { padding:80px 0; }
+  #contact { padding:100px 0; }
+  footer { padding:22px 24px; flex-direction:column; gap:10px; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<div id="cd"></div>
+<div id="cr"></div>
+<div id="prog"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Yash <span>Vora</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#algorithms">Algorithms</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:yashvora75@gmail.com" class="nav-cta">Hire Me</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+  <div class="glow g3"></div>
+  <div class="hero-in">
+    <div>
+      <div class="hero-tag"><span class="tdot"></span>Open to opportunities</div>
+      <h1 class="hero-name">Yash<br><em>Vora</em></h1>
+      <p class="hero-sub">Algorithmic & Quantitative Trader &nbsp;·&nbsp; Full-Stack Developer</p>
+      <div class="hero-rule"></div>
+      <p class="hero-desc">
+        Computer Engineer and professional Algo Trader at <strong>Deltamark LLP</strong>. I build proprietary trading systems for Nifty, BankNifty and Sensex — blending quantitative strategy with disciplined risk management. <strong>NISM Series-VIII Certified.</strong>
+      </p>
+      <div class="hero-btns">
+        <a href="#algorithms" class="btn-p">View Algorithms</a>
+        <a href="#contact" class="btn-g">Get in Touch</a>
+      </div>
+    </div>
+    <div>
+      <div class="hcard">
+        <div class="card-lbl">Performance Snapshot</div>
+        <div class="stat-g">
+          <div class="sbox">
+            <div class="sval" data-count="14" data-suffix="+">0+</div>
+            <div class="slbl">Algorithms Built</div>
+          </div>
+          <div class="sbox">
+            <div class="sval">2%<em>+</em></div>
+            <div class="slbl">Min Monthly Return</div>
+          </div>
+          <div class="sbox">
+            <div class="sval">100<em>%</em></div>
+            <div class="slbl">XAU/USD Returns</div>
+          </div>
+          <div class="sbox">
+            <div class="sval">~90<em>%</em></div>
+            <div class="slbl">Golden Cross Accuracy</div>
+          </div>
+        </div>
+        <div class="live-pill">
+          <div class="ldot"></div>
+          <div class="ltxt">Live Trading — Nifty · BankNifty · Sensex</div>
+        </div>
+        <div>
+          <div style="font-size:.68rem;color:var(--muted2);margin-bottom:10px;letter-spacing:.07em;text-transform:uppercase">Portfolio Trend (Illustrative)</div>
+          <svg width="100%" height="68" viewBox="0 0 380 68" fill="none">
+            <defs>
+              <linearGradient id="lg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#a78bca" stop-opacity=".22"/>
+                <stop offset="100%" stop-color="#a78bca" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,62 C22,58 38,54 58,48 C78,42 90,47 110,38 C130,29 142,34 162,23 C182,12 196,17 216,11 C236,5 250,9 270,4 C288,0 302,3 322,2 C342,1 362,3 380,0"
+              stroke="#a78bca" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M0,62 C22,58 38,54 58,48 C78,42 90,47 110,38 C130,29 142,34 162,23 C182,12 196,17 216,11 C236,5 250,9 270,4 C288,0 302,3 322,2 C342,1 362,3 380,0 L380,68 L0,68 Z"
+              fill="url(#lg)"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mqwrap">
+  <div class="mqtrack">
+    <span class="mqitem">Python Algo Trading <span class="mqsep"></span></span>
+    <span class="mqitem">Derivatives & Options <span class="mqsep"></span></span>
+    <span class="mqitem">Nifty · BankNifty · Sensex <span class="mqsep"></span></span>
+    <span class="mqitem">VIX Range Analysis <span class="mqsep"></span></span>
+    <span class="mqitem">NISM Series-VIII Certified <span class="mqsep"></span></span>
+    <span class="mqitem">Flask Web Dashboards <span class="mqsep"></span></span>
+    <span class="mqitem">Machine Learning <span class="mqsep"></span></span>
+    <span class="mqitem">Risk Management <span class="mqsep"></span></span>
+    <span class="mqitem">Backtesting Models <span class="mqsep"></span></span>
+    <span class="mqitem">XAU/USD · EUR/USD <span class="mqsep"></span></span>
+    <span class="mqitem">Full-Stack Developer <span class="mqsep"></span></span>
+    <span class="mqitem">MT5 Platform <span class="mqsep"></span></span>
+    <span class="mqitem">Python Algo Trading <span class="mqsep"></span></span>
+    <span class="mqitem">Derivatives & Options <span class="mqsep"></span></span>
+    <span class="mqitem">Nifty · BankNifty · Sensex <span class="mqsep"></span></span>
+    <span class="mqitem">VIX Range Analysis <span class="mqsep"></span></span>
+    <span class="mqitem">NISM Series-VIII Certified <span class="mqsep"></span></span>
+    <span class="mqitem">Flask Web Dashboards <span class="mqsep"></span></span>
+    <span class="mqitem">Machine Learning <span class="mqsep"></span></span>
+    <span class="mqitem">Risk Management <span class="mqsep"></span></span>
+    <span class="mqitem">Backtesting Models <span class="mqsep"></span></span>
+    <span class="mqitem">XAU/USD · EUR/USD <span class="mqsep"></span></span>
+    <span class="mqitem">Full-Stack Developer <span class="mqsep"></span></span>
+    <span class="mqitem">MT5 Platform <span class="mqsep"></span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="stag rv">About Me</div>
+    <h2 class="sh rv">Where <em>Markets</em> Meet<br>Engineering</h2>
+    <div class="agrid">
+      <div class="rvl">
+        <div class="atext">
+          <p>I'm a <strong>Computer Engineer and professional Algorithmic Trader</strong> at Deltamark LLP, with a B.Tech in Computer Science from NMIMS University (2018–2025). My work lives at the intersection of financial markets, mathematics, and software engineering.</p>
+          <p>I've independently built and deployed <strong>14+ proprietary trading algorithms</strong> — from options selling bots to ML-powered equity scanners. Beyond Indian markets, I've achieved <strong>100% returns</strong> in XAU/USD and EUR/USD Forex positions.</p>
+          <p>My philosophy: markets are information systems. The edge comes from <strong>processing that information faster, cleaner, and more systematically</strong> than anyone else in the room.</p>
+        </div>
+        <div class="achips">
+          <span class="chip">Derivatives</span><span class="chip">Quantitative Analysis</span><span class="chip">Python</span><span class="chip">Flask</span><span class="chip">Machine Learning</span><span class="chip">Risk Management</span><span class="chip">MT5</span><span class="chip">Forex</span><span class="chip">Prompt Engineering</span>
+        </div>
+      </div>
+      <div class="scol rvr">
+        <div><div class="sti-top"><span class="sn">Python & Algorithmic Trading</span><span class="sp">95%</span></div><div class="btrack"><div class="bfill" data-w=".95"></div></div></div>
+        <div><div class="sti-top"><span class="sn">Options Strategy & Derivatives</span><span class="sp">92%</span></div><div class="btrack"><div class="bfill" data-w=".92"></div></div></div>
+        <div><div class="sti-top"><span class="sn">Backtesting & Predictive Models</span><span class="sp">88%</span></div><div class="btrack"><div class="bfill" data-w=".88"></div></div></div>
+        <div><div class="sti-top"><span class="sn">Risk Management</span><span class="sp">90%</span></div><div class="btrack"><div class="bfill" data-w=".90"></div></div></div>
+        <div><div class="sti-top"><span class="sn">Flask & Web Development</span><span class="sp">82%</span></div><div class="btrack"><div class="bfill" data-w=".82"></div></div></div>
+        <div><div class="sti-top"><span class="sn">Machine Learning</span><span class="sp">78%</span></div><div class="btrack"><div class="bfill" data-w=".78"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <div class="stag rv">Experience</div>
+    <h2 class="sh rv">Where I've <em>Worked</em></h2>
+    <div class="egrid">
+      <div class="ecard feat rv">
+        <div class="ein">
+          <div>
+            <div class="eper">2025 — Present</div>
+            <div class="eco">Deltamark LLP</div>
+            <div class="erole">Algorithmic & Quantitative Trader</div>
+            <div class="ebadge">NISM Series-VIII Certified</div>
+            <ul class="eps">
+              <li>Python-based algo platform for Nifty, BankNifty & Sensex with real-time market data API integration.</li>
+              <li>Tick-by-tick tracking of index cash, futures, synthetic futures, and straddle/strangle options.</li>
+              <li>Ratio finder strategy achieving a minimum <strong>2% monthly return</strong>.</li>
+              <li>Flask-based web dashboard with real-time P&L analytics and position monitoring.</li>
+            </ul>
+          </div>
+          <div>
+            <ul class="eps" style="margin-top:0">
+              <li>Automated strangles, var options, delta-neutral, ratio & butterfly setups with VIX-based range projections.</li>
+              <li>Optimised high-frequency data processing under market volatility.</li>
+              <li>Automated Excel-based trade analysis reports for faster decisions.</li>
+              <li>Rigorous backtesting; advancing algorithms for stock options and futures.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="ecard rv">
+        <div class="eper">May 2023 — Dec 2023</div>
+        <div class="eco">Autosocial</div>
+        <div class="erole">Software Engineer Intern</div>
+        <ul class="eps">
+          <li>End-to-end eCommerce platform with OTP auth (Fast2SMS), Paytm gateway, responsive frontend.</li>
+          <li>PHP/MySQL backend for user accounts, brand partnerships, club registrations — with SEO & Google Analytics.</li>
+          <li>Drove digital marketing; independently onboarded automotive companies and clubs.</li>
+          <li>Designed mobile UI/UX prototypes in Figma.</li>
+        </ul>
+      </div>
+      <div class="ecard rv">
+        <div class="eper">2021 — 2022</div>
+        <div class="eco">Living Consumer Products</div>
+        <div class="erole">Software Engineer Intern · 🏆 Intern of the Month</div>
+        <ul class="eps">
+          <li>Full CMS on Laravel — Admin Panel, SmartSearch, role-based access, bulk Excel/CSV upload.</li>
+          <li>Reduced employee workload by <strong>75%</strong> through automation.</li>
+          <li>Cloud infrastructure for millions of candidate records with infosec compliance.</li>
+          <li>Collaborated with Digital & Affiliate marketing on major client campaigns.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALGORITHMS -->
+<section id="algorithms">
+  <div class="wrap">
+    <div class="stag rv">Proprietary Systems</div>
+    <h2 class="sh rv">Trading <em>Algorithms</em><br>Built & Deployed</h2>
+    <div class="algrid">
+      <div class="alcard rv"><div class="alnum">01</div><div class="alname">VIX Range Algo</div><div class="aldesc">Flask app printing live strangles for options selling with real-time alerts and precise volatility calculations.</div><span class="altag">Options Selling</span></div>
+      <div class="alcard rv"><div class="alnum">02</div><div class="alname">Ratio Finder</div><div class="aldesc">Identifies optimal strike prices for ratio strategies, highlighting best ratios vs current straddle value in real time.</div><span class="altag">Ratio Trading</span></div>
+      <div class="alcard rv"><div class="alnum">03</div><div class="alname">Straddle, Strangle & Synthetic Futures</div><div class="aldesc">WebSocket tick-by-tick data fetcher computing live straddle, synthetic futures, index spot, futures and option prices.</div><span class="altag">Real-time · WebSocket</span></div>
+      <div class="alcard rv"><div class="alnum">04</div><div class="alname">UT Trading Bot</div><div class="aldesc">ML-optimised equity bot automating live buy/sell signals with dynamic risk management for high-probability trades.</div><span class="altag">ML · Automation</span></div>
+      <div class="alcard rv"><div class="alnum">05</div><div class="alname">Live OI, Option Chain & PCR</div><div class="aldesc">Fetches and displays live Open Interest, full option chain, and Put-Call Ratio data across multiple stocks.</div><span class="altag">Derivatives Data</span></div>
+      <div class="alcard rv"><div class="alnum">06</div><div class="alname">RSI Equity</div><div class="aldesc">RSI with 20/80 and 30/70 thresholds for extreme price conditions targeting the highest-probability setups.</div><span class="altag">Technical Analysis</span></div>
+      <div class="alcard rv"><div class="alnum">07</div><div class="alname">MACD Equity</div><div class="aldesc">MACD crossover strategy for high-probability trend-following across indices and stocks in the derivatives market.</div><span class="altag">Trend Following</span></div>
+      <div class="alcard rv"><div class="alnum">08</div><div class="alname">Volume Trading Equity</div><div class="aldesc">Tracks average and daily volume to surface high-volume stocks for trading opportunities in liquid markets.</div><span class="altag">Volume Analysis</span></div>
+      <div class="alcard rv"><div class="alnum">09</div><div class="alname">Stock ATR</div><div class="aldesc">Calculates and tracks Average True Range across stocks for volatility analysis and systematic backtesting.</div><span class="altag">Volatility</span></div>
+      <div class="alcard rv"><div class="alnum">10</div><div class="alname">Upper Circuit Scanner</div><div class="aldesc">Identifies stocks hitting upper circuit limits (5%, 10%, 15%, 20%) in real time for momentum opportunities.</div><span class="altag">Momentum</span></div>
+      <div class="alcard rv"><div class="alnum">11</div><div class="alname">RSI + MACD Combined</div><div class="aldesc">Combines RSI thresholds and MACD crossovers for high-confidence signals across multiple stocks simultaneously.</div><span class="altag">Multi-Indicator</span></div>
+      <div class="alcard rv"><div class="alnum">12–13</div><div class="alname">Renko & Heikin Ashi</div><div class="aldesc">Converts candlestick data into Renko and Heikin Ashi charts to filter noise and enhance trend detection.</div><span class="altag">Chart Transformation</span></div>
+      <div class="alcard rv"><div class="alnum">14</div><div class="alname">Golden Crossover (50 & 200 EMA)</div><div class="aldesc">50/200-day EMA strategy achieving ~90% profitability across timeframes with a proprietary stop-loss framework.</div><span class="altag">~90% Win Rate</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="stag rv">Dev Projects</div>
+    <h2 class="sh rv">Beyond the <em>Markets</em></h2>
+    <div class="pgrid">
+      <div class="pcard rv"><div class="pico">🌐</div><div class="pname">Dynamic Web App</div><div class="pdesc">Full-stack web application with user auth, interactive UI and database management.</div><div class="ptechs"><span>HTML/CSS</span><span>JavaScript</span><span>Node.js</span><span>MySQL</span></div></div>
+      <div class="pcard rv"><div class="pico">🤖</div><div class="pname">RC Car (Arduino)</div><div class="pdesc">Remote-controlled car programmed using C++ and Arduino Uno microcontroller.</div><div class="ptechs"><span>C++</span><span>Arduino</span></div></div>
+      <div class="pcard rv"><div class="pico">📋</div><div class="pname">Attendance Portal</div><div class="pdesc">Automated student attendance management with reporting features.</div><div class="ptechs"><span>C++</span><span>Python</span></div></div>
+      <div class="pcard rv"><div class="pico">🎙️</div><div class="pname">Virtual Assistant — Laura</div><div class="pdesc">Android virtual assistant with voice recognition, GUI and task automation.</div><div class="ptechs"><span>Python</span><span>GUI</span><span>Android</span></div></div>
+      <div class="pcard rv"><div class="pico">🏦</div><div class="pname">Banking Application</div><div class="pdesc">Full-stack banking app with account management, transactions and secure auth.</div><div class="ptechs"><span>Java</span><span>VS Code</span></div></div>
+      <div class="pcard rv"><div class="pico">✍️</div><div class="pname">Handwriting Recognition</div><div class="pdesc">ML-based character recognition with high classification accuracy.</div><div class="ptechs"><span>Python</span><span>ML</span></div></div>
+      <div class="pcard rv"><div class="pico">💰</div><div class="pname">Loan Prediction Model</div><div class="pdesc">Machine learning model for automated loan approval prediction.</div><div class="ptechs"><span>Python</span><span>ML</span></div></div>
+      <div class="pcard rv"><div class="pico">🖼️</div><div class="pname">Image Grading System</div><div class="pdesc">ML-powered image quality grading and classification in Python.</div><div class="ptechs"><span>Python</span><span>ML</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="stag rv">Expertise</div>
+    <h2 class="sh rv">Skills &amp; <em>Tools</em></h2>
+    <div class="skcats">
+      <div class="skcat rv">
+        <div class="ctitle">Trading & Quant</div>
+        <div class="pills"><span class="pill">Python</span><span class="pill">Algo Trading</span><span class="pill">Options Strategies</span><span class="pill">VIX Analysis</span><span class="pill">RSI / MACD</span><span class="pill">Backtesting</span><span class="pill">Risk Management</span><span class="pill">P&L Tracking</span><span class="pill">MT5</span><span class="pill">WebSocket APIs</span><span class="pill">Derivatives</span></div>
+      </div>
+      <div class="skcat rv">
+        <div class="ctitle">Development</div>
+        <div class="pills"><span class="pill">Flask</span><span class="pill">Laravel / PHP</span><span class="pill">React.js</span><span class="pill">Node.js</span><span class="pill">JavaScript</span><span class="pill">C++</span><span class="pill">Java</span><span class="pill">MongoDB</span><span class="pill">MySQL</span><span class="pill">WordPress</span><span class="pill">Figma</span></div>
+      </div>
+      <div class="skcat rv">
+        <div class="ctitle">AI / Data / Tools</div>
+        <div class="pills"><span class="pill">Machine Learning</span><span class="pill">Prompt Engineering</span><span class="pill">Data Analysis</span><span class="pill">Excel Automation</span><span class="pill">Google Colab</span><span class="pill">Linux OS</span><span class="pill">SEO</span><span class="pill">Google Analytics</span><span class="pill">Paytm Gateway</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="wrap">
+    <div class="stag rv">Credentials</div>
+    <h2 class="sh rv">Certifications &amp; <em>Honours</em></h2>
+    <div class="cgrid">
+      <div class="ccard rv"><div class="cico">📜</div><div><div class="cname">NISM Series-VIII: Equity Derivatives</div><div class="cdate">2025 · Active</div></div></div>
+      <div class="ccard rv"><div class="cico">🔐</div><div><div class="cname">Beginner Cyber Security Course</div><div class="cdate">May – July 2020</div></div></div>
+      <div class="ccard rv"><div class="cico">✍️</div><div><div class="cname">Technical Writing Skills</div><div class="cdate">July – Dec 2022</div></div></div>
+      <div class="ccard rv"><div class="cico">☮️</div><div><div class="cname">Industrial Relations & Peace Studies</div><div class="cdate">Dec 2022 – April 2023</div></div></div>
+      <div class="ccard rv"><div class="cico">🏆</div><div><div class="cname">Intern of the Month</div><div class="cdate">Living Consumer Products · 2021</div></div></div>
+      <div class="ccard rv"><div class="cico">🌿</div><div><div class="cname">Member · Paryavaran, NMIMS</div><div class="cdate">2019</div></div></div>
+      <div class="ccard rv"><div class="cico">🎗️</div><div><div class="cname">Global Cancer Concern India</div><div class="cdate">2014 – 2016</div></div></div>
+      <div class="ccard rv"><div class="cico">👁️</div><div><div class="cname">Finance Committee · NAB</div><div class="cdate">National Association for Blind · 2012–2013</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="cbg1"></div>
+  <div class="cbg2"></div>
+  <div class="wrap">
+    <div class="cin">
+      <div class="ctag rv">Get in Touch</div>
+      <h2 class="ch rv">Let's Build<br><em>Something</em> Together</h2>
+      <p class="csub rv">Open to quant roles, algo trading collaborations, fintech projects, and freelance development. Based in Mumbai, India.</p>
+      <div class="crow rv">
+        <a href="mailto:yashvora75@gmail.com" class="clink">✉️ &nbsp;yashvora75@gmail.com</a>
+        <a href="tel:+918104715850" class="clink">📞 &nbsp;+91 81047 15850</a>
+        <a href="#" class="clink">📍 &nbsp;Mumbai, India</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fc">© 2025 Yash Vora. All rights reserved.</div>
+  <div class="fr">Algo Trader & Developer · Mumbai <span>♥</span></div>
+</footer>
+
+<script>
+/* CURSOR */
+const cd=document.getElementById('cd'),cr=document.getElementById('cr');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function t(){cd.style.left=mx+'px';cd.style.top=my+'px';rx+=(mx-rx)*.13;ry+=(my-ry)*.13;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(t);})();
+document.querySelectorAll('a,button,.alcard,.sbox,.pill,.chip,.pcard,.ecard').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('lh'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('lh'));
+});
+
+/* PROGRESS */
+const prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{prog.style.width=(window.scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';});
+
+/* NAV */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',window.scrollY>60));
+
+/* REVEAL */
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*50);obs.unobserve(e.target);}});
+},{threshold:0.11,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>obs.observe(el));
+
+/* SKILL BARS */
+const bo=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.transform=`scaleX(${e.target.dataset.w})`;bo.unobserve(e.target);}});
+},{threshold:0.4});
+document.querySelectorAll('.bfill').forEach(f=>bo.observe(f));
+
+/* COUNTER */
+function ac(el){
+  const t=parseInt(el.dataset.count),s=el.dataset.suffix||'';
+  let st=null;
+  (function step(ts){if(!st)st=ts;const p=Math.min((ts-st)/1500,1),e=1-Math.pow(1-p,3);el.childNodes[0].textContent=Math.round(e*t)+s;if(p<1)requestAnimationFrame(step);})(performance.now());
+}
+const co=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){ac(e.target);co.unobserve(e.target);}});},{threshold:0.5});
+document.querySelectorAll('[data-count]').forEach(el=>co.observe(el));
+
+/* ALGO CARD 3D TILT */
+document.querySelectorAll('.alcard').forEach(c=>{
+  c.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    c.style.transform=`translateY(-3px) rotateX(${-y*6}deg) rotateY(${x*6}deg)`;
+    c.style.transition='box-shadow .3s,border-color .3s';
+  });
+  c.addEventListener('mouseleave',()=>{
+    c.style.transform='';
+    c.style.transition='transform .45s ease,box-shadow .3s,border-color .3s';
+  });
+});
+
+/* GLOW PARALLAX */
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  document.querySelectorAll('.glow').forEach((g,i)=>{
+    g.style.transform=`translate(0,${y*(i%2===0?.08:-.06)}px)`;
+  });
+});
+
+/* SMOOTH ANCHORS */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}});
+});
+</script>
+</body>
+</html>
