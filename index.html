@@ -43,7 +43,7 @@ nav.sc { padding:12px 60px; background:rgba(8,8,9,0.97); }
 .nav-links a:hover::after,.nav-links a.active::after { transform:scaleX(1); }
 .nav-links a.active { color:var(--white2); }
 .nav-right { display:flex; align-items:center; gap:8px; }
-.nav-cta { font-family:var(--font-mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; padding:9px 17px; border-radius:var(--r); background:var(--purple); color:var(--white); text-decoration:none; transition:background .2s,transform .2s; }
+.nav-cta { font-family:var(--font-mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; padding:9px 17px; border-radius:var(--r); background:var(--purple); color:var(--white); text-decoration:none; transition:background .2s,transform .2s; border:none; cursor:pointer; }
 .nav-cta:hover { background:var(--purple2); transform:translateY(-1px); }
 .nav-resume { font-family:var(--font-mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; padding:9px 17px; border-radius:var(--r); border:1px solid var(--border2); color:var(--white2); text-decoration:none; background:transparent; transition:all .2s; }
 .nav-resume:hover { border-color:var(--purple); background:var(--purple-lt); transform:translateY(-1px); }
@@ -168,6 +168,39 @@ nav.sc { padding:12px 60px; background:rgba(8,8,9,0.97); }
 .qtag { display:inline-block; margin-top:10px; padding:3px 9px; border-radius:var(--r); border:1px solid var(--border); font-family:var(--font-mono); font-size:.57rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted2); transition:all .2s; }
 .qcard:hover .qtag { border-color:var(--border-p); color:var(--purple2); background:var(--purple-lt); }
 
+/* QUANT SYSTEMS & ANALYTICS */
+#qsystems { padding:120px 0; background:var(--bg); }
+.qsgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(268px,1fr)); gap:12px; margin-top:48px; }
+.qscard { background:var(--surface); border:1px solid var(--border); border-radius:var(--r2); padding:21px; position:relative; overflow:hidden; transition:border-color .25s,transform .25s; }
+.qscard:hover { border-color:var(--border-p); transform:translateY(-3px); }
+.qscard::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(123,47,255,0.4),transparent); opacity:0; transition:opacity .3s; }
+.qscard:hover::before { opacity:1; }
+.qsicon { font-size:1.2rem; margin-bottom:10px; }
+.qsname { font-family:var(--font-display); font-size:1.0rem; font-weight:700; color:var(--white); margin-bottom:7px; letter-spacing:-.01em; }
+.qsdesc { font-size:.78rem; line-height:1.75; color:var(--muted); }
+.qstag { display:inline-block; margin-top:10px; padding:3px 9px; border-radius:var(--r); border:1px solid var(--border); font-family:var(--font-mono); font-size:.57rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted2); transition:all .2s; }
+.qscard:hover .qstag { border-color:var(--border-p); color:var(--purple2); background:var(--purple-lt); }
+
+/* ARBITRAGE SYSTEMS */
+#arbitrage { padding:120px 0; background:var(--bg2); }
+.arbgrid { display:grid; grid-template-columns:1fr 1fr; gap:13px; margin-top:48px; }
+.arbcard { background:var(--surface); border:1px solid var(--border); border-radius:var(--r2); padding:28px; position:relative; overflow:hidden; transition:border-color .25s,transform .25s; }
+.arbcard:hover { border-color:var(--border-p); transform:translateY(-3px); }
+.arbcard::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(123,47,255,0.5),transparent); opacity:0; transition:opacity .3s; }
+.arbcard:hover::before { opacity:1; }
+.arb-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:var(--r); background:rgba(251,191,36,0.07); border:1px solid rgba(251,191,36,0.22); font-family:var(--font-mono); font-size:.58rem; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); margin-bottom:14px; }
+.arb-badge-dot { width:5px; height:5px; border-radius:50%; background:var(--amber); animation:blink 1.6s infinite; }
+.arb-name { font-family:var(--font-display); font-size:1.25rem; font-weight:800; color:var(--white); margin-bottom:8px; letter-spacing:-.02em; line-height:1.15; }
+.arb-sub { font-family:var(--font-mono); font-size:.68rem; color:var(--purple2); letter-spacing:.06em; margin-bottom:14px; }
+.arb-desc { font-size:.82rem; line-height:1.85; color:var(--muted); margin-bottom:16px; }
+.arb-desc strong { color:var(--white2); font-weight:500; }
+.arb-meta { display:flex; flex-wrap:wrap; gap:6px; }
+.arb-pill { padding:4px 10px; border-radius:var(--r); background:var(--bg3); border:1px solid var(--border); font-family:var(--font-mono); font-size:.62rem; color:var(--muted2); transition:all .18s; }
+.arbcard:hover .arb-pill { border-color:var(--border-p); color:var(--purple2); background:var(--purple-lt); }
+.arb-exchanges { display:flex; align-items:center; gap:8px; margin-bottom:16px; }
+.arb-ex { padding:5px 12px; border-radius:var(--r); background:var(--bg4); border:1px solid var(--border2); font-family:var(--font-mono); font-size:.68rem; font-weight:600; color:var(--white2); letter-spacing:.05em; }
+.arb-arrow { color:var(--purple2); font-size:.9rem; }
+
 /* ALGORITHMS */
 #algorithms { padding:120px 0; background:var(--bg); }
 .algrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(285px,1fr)); gap:11px; margin-top:48px; }
@@ -218,10 +251,7 @@ nav.sc { padding:12px 60px; background:rgba(8,8,9,0.97); }
 .cdate { font-family:var(--font-mono); font-size:.61rem; color:var(--muted2); }
 
 /* EXPERIENCE ALIGNMENT FIX */
-.ein-spacer {
-  /* matches: eper line-height + eco font size + erole + ebadge + gap = approx 108px */
-  height: 108px;
-}
+.ein-spacer { height: 108px; }
 
 /* EMAIL POPUP */
 .popup-overlay {
@@ -273,7 +303,7 @@ nav.sc { padding:12px 60px; background:rgba(8,8,9,0.97); }
 .popup-open-btn:hover { border-color: var(--purple); background: var(--purple-lt); color: var(--white); }
 
 /* CONTACT */
-#contact { padding:140px 0; background:var(--bg); position:relative; overflow:hidden; }
+#contact { padding:140px 0; background:var(--bg2); position:relative; overflow:hidden; }
 .cbg1 { position:absolute; border-radius:50%; pointer-events:none; filter:blur(120px); width:600px; height:600px; top:-120px; right:-100px; background:radial-gradient(circle,rgba(123,47,255,0.13),transparent 65%); }
 .cin { position:relative; z-index:1; text-align:center; }
 .ch { font-family:var(--font-display); font-size:clamp(3rem,7vw,6.2rem); font-weight:800; line-height:.9; letter-spacing:-.04em; color:var(--white); margin-bottom:16px; }
@@ -287,7 +317,7 @@ nav.sc { padding:12px 60px; background:rgba(8,8,9,0.97); }
 .clink.gh:hover { background:#24292e; border-color:#555; }
 .clink.ph:hover { background:#25d366; border-color:#25d366; }
 
-footer { padding:20px 60px; background:var(--bg2); border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+footer { padding:20px 60px; background:var(--bg3); border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
 .fc { font-family:var(--font-mono); font-size:.66rem; color:var(--muted2); }
 .fr { font-family:var(--font-mono); font-size:.66rem; color:var(--muted2); }
 .fr span { color:var(--purple2); }
@@ -304,7 +334,8 @@ footer { padding:20px 60px; background:var(--bg2); border-top:1px solid var(--bo
   .agrid,.egrid,.skcats,.edugrid{grid-template-columns:1fr;}
   .ecard.feat .ein{grid-template-columns:1fr;}
   .wrap{padding:0 20px;}
-  #about,#education,#experience,#quant,#algorithms,#projects,#skills,#certifications{padding:68px 0;}
+  #about,#education,#experience,#quant,#qsystems,#arbitrage,#algorithms,#projects,#skills,#certifications{padding:68px 0;}
+  .arbgrid{grid-template-columns:1fr;}
   #contact{padding:88px 0;}
   footer{padding:16px 20px;flex-direction:column;gap:6px;text-align:center;}
 }
@@ -323,6 +354,8 @@ footer { padding:20px 60px; background:var(--bg2); border-top:1px solid var(--bo
     <li><a href="#education">Education</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#quant">Quant Models</a></li>
+    <li><a href="#qsystems">Quant Systems</a></li>
+    <li><a href="#arbitrage">Arbitrage</a></li>
     <li><a href="#algorithms">Algorithms</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#skills">Skills</a></li>
@@ -335,60 +368,55 @@ footer { padding:20px 60px; background:var(--bg2); border-top:1px solid var(--bo
 
 <!-- HERO -->
 <section id="hero">
-  <div class="gspot gs1"></div>
-  <div class="gspot gs2"></div>
-  <div class="hero-in">
-    <div>
-      <div class="hero-eyebrow"><span class="edot"></span>Open to Opportunities · Mumbai, India</div>
-      <p class="hero-tagline">Algo Trader &nbsp;·&nbsp; Quant Developer &nbsp;·&nbsp; Strategy Builder</p>
-      <h1 class="hero-name"><span class="solid">Yash</span><br><span class="accent">Vora</span></h1>
-      <p class="hero-oneliner">I build systems that <em>trade faster</em> than humans can think.</p>
-      <div class="hero-divider"></div>
-      <p class="hero-desc">Computer Engineer and professional Algo Trader at <strong>Deltamark LLP</strong>, specializing in derivatives trading, quantitative strategy development, and automated low-latency trading systems. <strong>NISM Series-VIII Certified.</strong> Experienced across Equities, Derivatives, Forex, and Commodities.</p>
-      <div class="hero-meta">
-        <div class="hmeta">✉️ <span>yashvora75@gmail.com</span></div>
-        <div class="hmeta">📍 <span>Mumbai, India</span></div>
-      </div>
-      <div class="hero-btns">
-        <a href="#algorithms" class="btn-solid">View Algorithms</a>
-        <a href="#quant" class="btn-ghost">Quant Models</a>
-      </div>
-    </div>
-    <div>
-      <div class="hcard">
-        <!-- <div class="avatar-wrap">
-          <div class="avatar">YV</div>
-          <div class="avatar-info">
-            <div class="avatar-name">Yash Vora</div>
-            <div class="avatar-role">Algo Trader · Quant Dev · Full-Stack</div>
-          </div>
-        </div> -->
-        <div class="hcard-label">At a Glance</div>
-        <div class="stat-grid">
-          <div class="sbox"><div class="sval" data-count="14" data-suffix="+">0+</div><div class="slbl">Algorithms Built</div></div>
-          <div class="sbox"><div class="sval" data-count="9" data-suffix="+">0+</div><div class="slbl">Quant Models</div></div>
-          <div class="sbox"><div class="sval" data-count="8" data-suffix="+">0+</div><div class="slbl">Dev Projects</div></div>
-          <div class="sbox"><div class="sval" data-count="86" data-suffix="%">0%</div><div class="slbl">Best Algo Avg</div></div>
-        </div>
-        <div class="live-pill"><div class="ldot"></div><div class="ltxt">Live Trading — Nifty · BankNifty · Sensex</div></div>
-        <div>
-          <div style="font-family:'Arial',sans-serif;font-size:.6rem;color:var(--muted2);margin-bottom:9px;letter-spacing:.1em;text-transform:uppercase">Portfolio Trend — Illustrative</div>
-          <svg width="100%" height="60" viewBox="0 0 380 60" fill="none">
-            <defs>
-              <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#7B2FFF" stop-opacity=".25"/>
-                <stop offset="100%" stop-color="#7B2FFF" stop-opacity="0"/>
-              </linearGradient>
-            </defs>
-            <path d="M0,55 C22,50 38,47 58,42 C78,37 90,41 110,33 C130,25 142,29 162,19 C182,10 196,14 216,9 C236,4 250,8 270,3 C288,0 302,2 322,1 C342,0 362,2 380,0"
-              stroke="#7B2FFF" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M0,55 C22,50 38,47 58,42 C78,37 90,41 110,33 C130,25 142,29 162,19 C182,10 196,14 216,9 C236,4 250,8 270,3 C288,0 302,2 322,1 C342,0 362,2 380,0 L380,60 L0,60 Z"
-              fill="url(#lg2)"/>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="gspot gs1"></div><div class="gspot gs2"></div>
+<div class="hero-in">
+<div>
+<div class="hero-eyebrow"><span class="edot"></span>Open to Opportunities · Mumbai, India</div>
+<p class="hero-tagline">Algorithmic Trader · Quantitative Developer</p>
+<h1 class="hero-name"><span class="solid">Yash</span><br><span class="accent">Vora</span></h1>
+<p class="hero-oneliner">I build systems that <em>trade faster</em> than humans can think.</p>
+<div class="hero-divider"></div>
+<p class="hero-desc">
+Computer Engineer and a<strong> Quantitative Algorithmic Trader at Deltamark LLP</strong>, specializing in derivatives trading, quantitative strategy development, and automated low-latency trading systems.
+<strong>NISM Series-VIII Certified.</strong>
+</p>
+<div class="hero-meta">
+<div class="hmeta">✉️ <span>yashvora75@gmail.com</span></div>
+<div class="hmeta">📍 <span>Mumbai, India</span></div>
+</div>
+<div class="hero-btns">
+<a href="#algorithms" class="btn-solid">View Algorithms</a>
+<a href="#quant" class="btn-ghost">Quant Models</a>
+</div>
+</div>
+<div>
+<div class="hcard">
+<div class="hcard-label">Performance Snapshot</div>
+<div class="stat-grid">
+<div class="sbox"><div class="sval" data-count="14" data-suffix="+">0+</div><div class="slbl">Algorithms Built</div></div>
+<div class="sbox"><div class="sval" data-count="12" data-suffix="+">0+</div><div class="slbl">Quant Models</div></div>
+<div class="sbox"><div class="sval" data-count="2" data-suffix="+">0+</div><div class="slbl">Arbitrage Systems</div></div>
+<div class="sbox"><div class="sval" data-count="86" data-suffix="%">0%</div><div class="slbl">Best Algo Avg</div></div>
+</div>
+<div class="live-pill"><div class="ldot"></div><div class="ltxt">Live Trading — Nifty · BankNifty · Sensex</div></div>
+<div style="font-family:Arial;font-size:.6rem;color:var(--muted2);margin-bottom:9px;letter-spacing:.1em;text-transform:uppercase">
+Portfolio Trend — Illustrative
+</div>
+<svg width="100%" height="60" viewBox="0 0 380 60" fill="none">
+<defs>
+<linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#7B2FFF" stop-opacity=".25"/>
+<stop offset="100%" stop-color="#7B2FFF" stop-opacity="0"/>
+</linearGradient>
+</defs>
+<path d="M0,55 C20,48 40,50 60,42 C80,35 95,48 115,32 C135,22 150,30 170,18 C190,10 205,22 225,12 C245,6 260,14 280,4 C300,2 315,12 330,18 C345,20 360,10 380,5"
+stroke="#7B2FFF" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M0,55 C20,48 40,50 60,42 C80,35 95,48 115,32 C135,22 150,30 170,18 C190,10 205,22 225,12 C245,6 260,14 280,4 C300,2 315,12 330,18 C345,20 360,10 380,5 L380,60 L0,60 Z"
+fill="url(#lg2)"/>
+</svg>
+</div>
+</div>
+</div>
 </section>
 
 <!-- MARQUEE -->
@@ -536,7 +564,7 @@ footer { padding:20px 60px; background:var(--bg2); border-top:1px solid var(--bo
   </div>
 </section>
 
-<!-- QUANT MODELS -->
+<!-- QUANT MODELS (trimmed: removed DNP, Greeks Engine, VaR Controls, PCR Analytics, Volatility Analytics) -->
 <section id="quant">
   <div class="wrap">
     <div class="stag rv">Quantitative Research</div>
@@ -545,13 +573,134 @@ footer { padding:20px 60px; background:var(--bg2); border-top:1px solid var(--bo
     <div class="qgrid">
       <div class="qcard rv"><div class="qformula">C = S·N(d₁) − K·e⁻ʳᵀ·N(d₂)</div><div class="qname">Black–Scholes Option Pricing</div><div class="qdesc">Full implementation for European options pricing — calculates theoretical call and put values from underlying price, strike, time to expiry, risk-free rate, and implied volatility.</div><span class="qtag">Options Pricing</span></div>
       <div class="qcard rv"><div class="qformula">GEX = Σ Γᵢ · OIᵢ · Sᵢ²</div><div class="qname">Gamma Exposure (GEX)</div><div class="qdesc">Aggregates gamma across all outstanding options contracts to identify key price levels where dealer hedging activity creates natural support and resistance in the market.</div><span class="qtag">Market Structure</span></div>
-      <div class="qcard rv"><div class="qformula">Δ_portfolio = 0</div><div class="qname">Delta Neutral Positioning (DNP)</div><div class="qdesc">Dynamic delta management system that continuously monitors and rebalances portfolio delta exposure to maintain market-neutral positions under live market conditions.</div><span class="qtag">Risk Management</span></div>
-      <div class="qcard rv"><div class="qformula">IV = f(C, S, K, T, r)</div><div class="qname">Volatility Analytics & IV Surface</div><div class="qdesc">Real-time implied volatility computation using Newton-Raphson and bisection methods. Tracks vol skew and term structure across strikes and expiries across the full options chain.</div><span class="qtag">Volatility</span></div>
-      <div class="qcard rv"><div class="qformula">Δ &nbsp; Γ &nbsp; Θ &nbsp; Vega &nbsp; ρ</div><div class="qname">Options Greeks Engine</div><div class="qdesc">Full suite of first and second-order Greeks — Delta, Gamma, Theta, Vega, and Rho — computed live across entire options chains for real-time position analysis and risk monitoring.</div><span class="qtag">Derivatives Analytics</span></div>
       <div class="qcard rv"><div class="qformula">SF = F + (C − P)</div><div class="qname">Synthetic Futures Pricing</div><div class="qdesc">Computes synthetic futures values from put-call parity in real time — used to spot mispricings between the futures and options markets and identify arbitrage opportunities.</div><span class="qtag">Arbitrage</span></div>
-      <div class="qcard rv"><div class="qformula">VaR = σ · z · √t</div><div class="qname">VaR-Based Risk Controls</div><div class="qdesc">Value-at-Risk framework integrated directly into the live trading system. Enforces hard position limits and triggers automated hedges when portfolio risk thresholds are breached.</div><span class="qtag">Risk Framework</span></div>
       <div class="qcard rv"><div class="qformula">Range = VIX / √252 · S</div><div class="qname">VIX Range Prediction Model</div><div class="qdesc">Volatility-based daily range forecasting using VIX to project intraday high/low bounds — core to the live options selling and strangle strategies running in the market.</div><span class="qtag">Volatility Forecasting</span></div>
-      <div class="qcard rv"><div class="qformula">PCR = Put OI / Call OI</div><div class="qname">Put-Call Ratio & OI Analytics</div><div class="qdesc">Live Open Interest and PCR tracking across multiple strikes and expiries — used as a positioning and sentiment indicator for strategy entry and exit timing decisions.</div><span class="qtag">Sentiment Analysis</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUANTITATIVE SYSTEMS & ANALYTICS -->
+<section id="qsystems">
+  <div class="wrap">
+    <div class="stag rv">Live Infrastructure</div>
+    <h2 class="sh rv">Quantitative <em>Systems</em><br>&amp; Analytics</h2>
+    <p class="rv" style="font-size:.87rem;color:var(--muted);max-width:560px;line-height:1.8;margin-top:10px;">Production-grade systems and analytics engines deployed in live trading — built to process, monitor, and act on real-time market data at every tick.</p>
+    <div class="qsgrid">
+
+      <div class="qscard rv">
+        <div class="qsicon">⚖️</div>
+        <div class="qsname">Delta Neutral Positioning (DNP)</div>
+        <div class="qsdesc">Dynamic delta management system that continuously monitors and rebalances portfolio delta exposure to maintain market-neutral positions under live market conditions.</div>
+        <span class="qstag">Risk Management</span>
+      </div>
+
+      <div class="qscard rv">
+        <div class="qsicon">🔢</div>
+        <div class="qsname">Options Greeks Engine</div>
+        <div class="qsdesc">Full suite of first and second-order Greeks — Delta, Gamma, Theta, Vega, and Rho — computed live across entire options chains for real-time position analysis and risk monitoring.</div>
+        <span class="qstag">Derivatives Analytics</span>
+      </div>
+
+      <div class="qscard rv">
+        <div class="qsicon">🛡️</div>
+        <div class="qsname">VaR-Based Risk Controls</div>
+        <div class="qsdesc">Value-at-Risk framework integrated directly into the live trading system. Enforces hard position limits and triggers automated hedges when portfolio risk thresholds are breached.</div>
+        <span class="qstag">Risk Framework</span>
+      </div>
+
+      <div class="qscard rv">
+        <div class="qsicon">📊</div>
+        <div class="qsname">Put-Call Ratio & OI Analytics</div>
+        <div class="qsdesc">Live Open Interest and PCR tracking across multiple strikes and expiries — used as a positioning and sentiment indicator for strategy entry and exit timing decisions.</div>
+        <span class="qstag">Sentiment Analysis</span>
+      </div>
+
+      <div class="qscard rv">
+        <div class="qsicon">📡</div>
+        <div class="qsname">WebSocket Live Data Pipeline</div>
+        <div class="qsdesc">Tick-by-tick real-time data streaming infrastructure built on Flask and WebSockets — feeds live prices, straddle values, and synthetic futures into every analytics layer simultaneously.</div>
+        <span class="qstag">Real-time Infrastructure</span>
+      </div>
+
+      <div class="qscard rv">
+        <div class="qsicon">📋</div>
+        <div class="qsname">Live P&L & Volatility Dashboard</div>
+        <div class="qsdesc">Internal Flask dashboard displaying live volatility metrics, open positions, and running P&L throughout each session — built for instant trade review and intraday decision support.</div>
+        <span class="qstag">Analytics Dashboard</span>
+      </div>
+
+      <div class="qscard rv">
+        <div class="qsicon">⚙️</div>
+        <div class="qsname">Order Management & Execution Layer</div>
+        <div class="qsdesc">Custom-built execution engine handling order validation, retry logic for failed trades, position sizing rules, and exposure limits — keeps all live trades within defined risk parameters.</div>
+        <span class="qstag">Execution Engine</span>
+      </div>
+
+      <div class="qscard rv">
+        <div class="qsicon">🔍</div>
+        <div class="qsname">Derivatives Market Monitor</div>
+        <div class="qsdesc">Real-time tracking of index cash, futures, synthetic futures, straddles, and strangles — built to surface key market structure signals across Nifty, BankNifty, and Sensex simultaneously.</div>
+        <span class="qstag">Market Monitoring</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ARBITRAGE SYSTEMS -->
+<section id="arbitrage">
+  <div class="wrap">
+    <div class="stag rv">Speed-Edge Strategies</div>
+    <h2 class="sh rv">Arbitrage <em>Systems</em></h2>
+    <p class="rv" style="font-size:.87rem;color:var(--muted);max-width:560px;line-height:1.8;margin-top:10px;">Low-latency arbitrage systems designed to detect and capture fleeting price discrepancies across exchanges — where milliseconds are the edge.</p>
+    <div class="arbgrid">
+
+      <div class="arbcard rv">
+        <div class="arb-badge"><span class="arb-badge-dot"></span>Low Latency · Live</div>
+        <div class="arb-exchanges">
+          <span class="arb-ex">NSE</span>
+          <span class="arb-arrow">⇄</span>
+          <span class="arb-ex">BSE</span>
+        </div>
+        <div class="arb-name">Cash-to-Cash Cross-Exchange Arbitrage</div>
+        <div class="arb-sub">NSE · BSE · Equities · Intraday</div>
+        <div class="arb-desc">
+          Detects <strong>real-time price discrepancies</strong> of the same equity listed on both NSE and BSE. The system simultaneously monitors bid/ask spreads on both exchanges tick-by-tick — when a spread exceeds the execution threshold, it fires <strong>simultaneous buy and sell orders</strong> on opposite legs to lock in a risk-free spread.
+          Built on a <strong>low-latency event-driven architecture</strong> with broker API co-location awareness, order routing optimisation, and sub-second execution logic. Includes <strong>slippage modelling, brokerage cost netting, and dynamic spread filters</strong> to ensure only genuinely profitable opportunities are traded.
+        </div>
+        <div class="arb-meta">
+          <span class="arb-pill">Equities</span>
+          <span class="arb-pill">Dual-Leg Execution</span>
+          <span class="arb-pill">Tick-Level Feeds</span>
+          <span class="arb-pill">Spread Filtering</span>
+          <span class="arb-pill">Broker API</span>
+          <span class="arb-pill">Event-Driven</span>
+        </div>
+      </div>
+
+      <div class="arbcard rv">
+        <div class="arb-badge"><span class="arb-badge-dot"></span>Low Latency · Live</div>
+        <div class="arb-exchanges">
+          <span class="arb-ex">Exchange A</span>
+          <span class="arb-arrow">⇄</span>
+          <span class="arb-ex">Exchange B</span>
+        </div>
+        <div class="arb-name">Crypto Cross-Exchange Price Arbitrage</div>
+        <div class="arb-sub">Crypto · Multi-Exchange · Intraday</div>
+        <div class="arb-desc">
+          Monitors the <strong>same cryptocurrency pair simultaneously across two exchanges</strong> — flagging price divergences the moment they exceed the net cost of execution. The system connects to both exchange WebSocket feeds in parallel, computes <strong>real-time spread after fees, withdrawal costs, and transfer latency</strong>, and executes both legs atomically when the opportunity is confirmed profitable.
+          Handles <strong>order book depth analysis</strong> to avoid partial fills, incorporates <strong>dynamic position sizing</strong> based on available liquidity, and logs every detected spread with full execution metadata for post-trade analysis and strategy refinement.
+        </div>
+        <div class="arb-meta">
+          <span class="arb-pill">Cryptocurrency</span>
+          <span class="arb-pill">WebSocket Feeds</span>
+          <span class="arb-pill">Order Book Depth</span>
+          <span class="arb-pill">Fee-Adjusted Spread</span>
+          <span class="arb-pill">Atomic Execution</span>
+          <span class="arb-pill">Multi-Exchange</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -583,7 +732,6 @@ footer { padding:20px 60px; background:var(--bg2); border-top:1px solid var(--bo
 <!-- PROJECTS -->
 <section id="projects">
   <div class="wrap">
-    <div class="stag rv">Dev Projects</div>
     <h2 class="sh rv">Beyond the <em>Markets</em></h2>
     <div class="pgrid">
       <div class="pcard rv"><div class="pico">🌐</div><div class="pname">Dynamic Web App</div><div class="pdesc">Full-stack web application with user authentication, interactive UI, and complete database management.</div><div class="ptechs"><span>HTML/CSS</span><span>JavaScript</span><span>Node.js</span><span>MySQL</span></div></div>
@@ -700,7 +848,7 @@ const cd=document.getElementById('cd'),cr=document.getElementById('cr');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
 (function t(){cd.style.left=mx+'px';cd.style.top=my+'px';rx+=(mx-rx)*.13;ry+=(my-ry)*.13;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(t);})();
-document.querySelectorAll('a,button,.alcard,.sbox,.pill,.chip,.pcard,.ecard,.qcard,.educard').forEach(el=>{
+document.querySelectorAll('a,button,.alcard,.sbox,.pill,.chip,.pcard,.ecard,.qcard,.educard,.qscard,.arbcard').forEach(el=>{
   el.addEventListener('mouseenter',()=>document.body.classList.add('lh'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('lh'));
 });
