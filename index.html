@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <!-- Google tag (gtag.js) -->
@@ -20,7 +20,9 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-:root {
+
+/* ── DARK THEME (default) ── */
+:root, [data-theme="dark"] {
   --bg:#080809; --bg2:#0D0D10; --bg3:#121215; --bg4:#17171C;
   --surface:#0F0F13; --surface2:#141419;
   --purple:#7B2FFF; --purple2:#9B5FFF; --purple3:#5A1FCC;
@@ -30,8 +32,22 @@ html { scroll-behavior: smooth; }
   --border:rgba(255,255,255,0.05); --border2:rgba(255,255,255,0.09); --border-p:rgba(123,47,255,0.30);
   --r:4px; --r2:10px;
   --font-display:Arial,sans-serif; --font-body:Arial,sans-serif; --font-mono:Arial,sans-serif;
+  --nav-bg:rgba(8,8,9,0.82); --nav-bg-sc:rgba(8,8,9,0.97);
 }
-body { font-family:var(--font-body); background:var(--bg); color:var(--white); overflow-x:hidden; cursor:none; }
+
+/* ── LIGHT THEME ── */
+[data-theme="light"] {
+  --bg:#F5F5F8; --bg2:#ECECF1; --bg3:#E4E4EC; --bg4:#DADADF;
+  --surface:#FFFFFF; --surface2:#F9F9FC;
+  --purple:#6B20EF; --purple2:#7B34FF; --purple3:#5A1FCC;
+  --purple-lt:rgba(107,32,239,0.08); --purple-md:rgba(107,32,239,0.14);
+  --green:#16a34a; --amber:#d97706;
+  --white:#18181B; --white2:#27272A; --muted:#52525B; --muted2:#A1A1AA;
+  --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.11); --border-p:rgba(107,32,239,0.25);
+  --nav-bg:rgba(245,245,248,0.88); --nav-bg-sc:rgba(245,245,248,0.98);
+}
+
+body { font-family:var(--font-body); background:var(--bg); color:var(--white); overflow-x:hidden; cursor:none; transition:background .3s,color .3s; }
 #cd,#cr { position:fixed; pointer-events:none; z-index:9999; border-radius:50%; transform:translate(-50%,-50%); }
 #cd { width:5px; height:5px; background:var(--purple2); }
 #cr { width:28px; height:28px; border:1px solid rgba(123,47,255,0.55); transition:width .2s,height .2s,border-color .2s; }
@@ -40,8 +56,8 @@ body.lh #cr { width:46px; height:46px; border-color:var(--purple2); }
 #prog { position:fixed; top:0; left:0; height:2px; z-index:300; background:linear-gradient(90deg,var(--purple3),var(--purple2)); width:0%; transition:width .1s; }
 
 /* NAV */
-nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:18px 60px; display:flex; align-items:center; justify-content:space-between; background:rgba(8,8,9,0.82); backdrop-filter:blur(24px); border-bottom:1px solid var(--border); transition:padding .3s,background .3s; }
-nav.sc { padding:12px 60px; background:rgba(8,8,9,0.97); }
+nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:18px 60px; display:flex; align-items:center; justify-content:space-between; background:var(--nav-bg); backdrop-filter:blur(24px); border-bottom:1px solid var(--border); transition:padding .3s,background .3s; }
+nav.sc { padding:12px 60px; background:var(--nav-bg-sc); }
 .nav-logo { font-family:var(--font-display); font-size:1.15rem; font-weight:800; color:var(--white); text-decoration:none; letter-spacing:-.01em; }
 .nav-logo span { color:var(--purple2); }
 .nav-links { display:flex; gap:26px; list-style:none; }
@@ -51,10 +67,46 @@ nav.sc { padding:12px 60px; background:rgba(8,8,9,0.97); }
 .nav-links a:hover::after,.nav-links a.active::after { transform:scaleX(1); }
 .nav-links a.active { color:var(--white2); }
 .nav-right { display:flex; align-items:center; gap:8px; }
-.nav-cta { font-family:var(--font-mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; padding:9px 17px; border-radius:var(--r); background:var(--purple); color:var(--white); text-decoration:none; transition:background .2s,transform .2s; border:none; cursor:pointer; }
+.nav-cta { font-family:var(--font-mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; padding:9px 17px; border-radius:var(--r); background:var(--purple); color:#fff; text-decoration:none; transition:background .2s,transform .2s; border:none; cursor:pointer; }
 .nav-cta:hover { background:var(--purple2); transform:translateY(-1px); }
 .nav-resume { font-family:var(--font-mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; padding:9px 17px; border-radius:var(--r); border:1px solid var(--border2); color:var(--white2); text-decoration:none; background:transparent; transition:all .2s; }
 .nav-resume:hover { border-color:var(--purple); background:var(--purple-lt); transform:translateY(-1px); }
+
+/* ── THEME TOGGLE (navbar) ── */
+.theme-toggle {
+  display:flex; align-items:center; gap:6px;
+  font-family:var(--font-mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase;
+  padding:8px 14px; border-radius:var(--r);
+  border:1px solid var(--border2); background:var(--surface);
+  color:var(--white2); cursor:pointer;
+  transition:all .25s ease; white-space:nowrap;
+}
+.theme-toggle:hover { border-color:var(--purple); background:var(--purple-lt); transform:translateY(-1px); }
+.theme-toggle .t-track {
+  width:28px; height:15px; border-radius:8px;
+  background:var(--bg3); border:1px solid var(--border2);
+  position:relative; transition:background .3s; flex-shrink:0;
+}
+/* Light mode: track turns purple */
+[data-theme="light"] .theme-toggle .t-track {
+  background:var(--purple);
+  border-color:var(--purple);
+}
+.theme-toggle .t-knob {
+  position:absolute; top:10%;
+  /* ✅ Dark mode: knob stays LEFT */
+  transform:translateX(-100%) translateX(0.5px);
+  width:11px; height:11px; border-radius:50%;
+  background:var(--muted2);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1), background .3s;
+}
+/* ✅ Light mode: knob slides RIGHT */
+[data-theme="light"] .theme-toggle .t-knob {
+  transform:translateY(-5%) translateX(1px);
+  background:#fff;
+}
+.theme-toggle .t-icon { font-size:.8rem; line-height:1; }
+.theme-toggle .t-label { font-size:.64rem; }
 
 /* HERO */
 #hero { min-height:100vh; display:flex; align-items:center; padding:130px 60px 80px; position:relative; overflow:hidden; }
@@ -69,6 +121,7 @@ nav.sc { padding:12px 60px; background:rgba(8,8,9,0.97); }
 .hero-tagline { font-family:var(--font-mono); font-size:.71rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; animation:fu .55s .04s ease both; }
 .hero-name { font-family:var(--font-display); font-size:clamp(4rem,8vw,8.5rem); font-weight:800; line-height:.88; letter-spacing:-.03em; animation:fu .55s .06s ease both; }
 .hero-name .outline { color:transparent; -webkit-text-stroke:1.5px rgba(255,255,255,0.15); }
+[data-theme="light"] .hero-name .outline { -webkit-text-stroke:1.5px rgba(0,0,0,0.12); }
 .hero-name .solid { color:var(--white); }
 .hero-name .accent { color:var(--purple2); }
 .hero-oneliner { font-family:var(--font-display); font-size:.98rem; font-weight:500; color:var(--white2); letter-spacing:-.01em; margin-top:17px; margin-bottom:6px; line-height:1.5; animation:fu .55s .10s ease both; }
@@ -80,12 +133,34 @@ nav.sc { padding:12px 60px; background:rgba(8,8,9,0.97); }
 .hmeta { display:flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:.66rem; color:var(--muted2); }
 .hmeta span { color:var(--muted); }
 .hero-btns { display:flex; gap:8px; animation:fu .55s .22s ease both; flex-wrap:wrap; }
-.btn-solid { font-family:var(--font-mono); padding:11px 22px; border-radius:var(--r); background:var(--purple); color:var(--white); font-size:.71rem; letter-spacing:.05em; text-transform:uppercase; text-decoration:none; transition:background .2s,transform .18s; border:1px solid var(--purple); }
+.btn-solid { font-family:var(--font-mono); padding:11px 22px; border-radius:var(--r); background:var(--purple); color:#fff; font-size:.71rem; letter-spacing:.05em; text-transform:uppercase; text-decoration:none; transition:background .2s,transform .18s; border:1px solid var(--purple); }
 .btn-solid:hover { background:var(--purple2); transform:translateY(-2px); }
 .btn-ghost { font-family:var(--font-mono); padding:11px 22px; border-radius:var(--r); border:1px solid var(--border2); color:var(--white2); font-size:.71rem; letter-spacing:.05em; text-transform:uppercase; text-decoration:none; background:transparent; transition:border-color .2s,background .2s,transform .18s; }
 .btn-ghost:hover { border-color:var(--purple); background:var(--purple-lt); transform:translateY(-2px); }
 .btn-dl { font-family:var(--font-mono); padding:11px 22px; border-radius:var(--r); border:1px solid rgba(74,222,128,0.3); color:var(--green); font-size:.71rem; letter-spacing:.05em; text-transform:uppercase; text-decoration:none; background:rgba(74,222,128,0.05); transition:all .2s; }
 .btn-dl:hover { border-color:var(--green); background:rgba(74,222,128,0.1); transform:translateY(-2px); }
+
+/* ── THEME TOGGLE (hero inline button) ── */
+.btn-theme {
+  font-family:var(--font-mono); padding:11px 18px; border-radius:var(--r);
+  border:1px solid var(--border2); color:var(--white2); font-size:.71rem;
+  letter-spacing:.05em; text-transform:uppercase; background:var(--surface);
+  transition:all .2s; cursor:pointer; display:flex; align-items:center; gap:7px;
+}
+.btn-theme:hover { border-color:var(--purple); background:var(--purple-lt); transform:translateY(-2px); }
+.btn-theme .bt-track {
+  width:26px; height:14px; border-radius:7px;
+  background:var(--bg3); border:1px solid var(--border2);
+  position:relative; transition:background .3s; flex-shrink:0;
+}
+[data-theme="light"] .btn-theme .bt-track { background:var(--purple); border-color:var(--purple); }
+.btn-theme .bt-knob {
+  position:absolute; top:50%; transform:translateY(-50%) translateX(1px);
+  width:10px; height:10px; border-radius:50%;
+  background:var(--muted2); transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s;
+}
+[data-theme="light"] .btn-theme .bt-knob { transform:translateY(-50%) translateX(13px); background:#fff; }
+.btn-theme .bt-icon { font-size:.78rem; }
 
 /* HERO CARD */
 .hcard { background:var(--surface); border:1px solid var(--border2); border-radius:var(--r2); padding:23px; animation:fu .55s .16s ease both; position:relative; overflow:hidden; }
@@ -118,6 +193,7 @@ nav.sc { padding:12px 60px; background:rgba(8,8,9,0.97); }
 .stag { font-family:var(--font-mono); display:inline-block; font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; color:var(--purple2); margin-bottom:10px; }
 .sh { font-family:var(--font-display); font-size:clamp(2.3rem,4.5vw,3.8rem); font-weight:800; line-height:1.0; letter-spacing:-.03em; color:var(--white); }
 .sh em { font-style:normal; color:transparent; -webkit-text-stroke:1px rgba(255,255,255,0.22); }
+[data-theme="light"] .sh em { -webkit-text-stroke:1px rgba(0,0,0,0.85); }
 
 /* ABOUT */
 #about { padding:120px 0; background:var(--bg); }
@@ -235,7 +311,7 @@ nav.sc { padding:12px 60px; background:rgba(8,8,9,0.97); }
 .pctxt { flex:1; }
 .pctitle { font-family:var(--font-display); font-size:1.03rem; font-weight:700; color:var(--white); margin-bottom:5px; }
 .pcdesc { font-size:.80rem; color:var(--muted); line-height:1.6; }
-.pcbtn { font-family:var(--font-mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; padding:10px 18px; border-radius:var(--r); background:var(--purple); color:var(--white); text-decoration:none; white-space:nowrap; transition:background .2s,transform .2s; }
+.pcbtn { font-family:var(--font-mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; padding:10px 18px; border-radius:var(--r); background:var(--purple); color:#fff; text-decoration:none; white-space:nowrap; transition:background .2s,transform .2s; }
 .pcbtn:hover { background:var(--purple2); transform:translateY(-1px); }
 
 /* SKILLS */
@@ -297,7 +373,7 @@ nav.sc { padding:12px 60px; background:rgba(8,8,9,0.97); }
 .popup-email-text { font-family: var(--font-mono); font-size: .82rem; color: var(--white2); letter-spacing: .02em; }
 .popup-copy-btn {
   font-family: var(--font-mono); font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
-  padding: 6px 12px; border-radius: var(--r); background: var(--purple); color: var(--white);
+  padding: 6px 12px; border-radius: var(--r); background: var(--purple); color: #fff;
   border: none; cursor: pointer; transition: background .2s, transform .15s; white-space: nowrap;
 }
 .popup-copy-btn:hover { background: var(--purple2); transform: translateY(-1px); }
@@ -316,11 +392,12 @@ nav.sc { padding:12px 60px; background:rgba(8,8,9,0.97); }
 .cin { position:relative; z-index:1; text-align:center; }
 .ch { font-family:var(--font-display); font-size:clamp(3rem,7vw,6.2rem); font-weight:800; line-height:.9; letter-spacing:-.04em; color:var(--white); margin-bottom:16px; }
 .ch .outline-text { color:transparent; -webkit-text-stroke:1.5px rgba(255,255,255,0.18); }
+[data-theme="light"] .ch .outline-text { -webkit-text-stroke:1.5px rgba(0,0,0,0.85); }
 .ch .purple-word { color:var(--purple2); }
 .csub { font-size:.89rem; color:var(--muted); max-width:400px; margin:0 auto 34px; line-height:1.8; }
 .crow { display:flex; justify-content:center; flex-wrap:wrap; gap:7px; }
 .clink { display:flex; align-items:center; gap:8px; padding:11px 18px; border-radius:var(--r); border:1px solid var(--border); background:var(--surface); font-family:var(--font-mono); font-size:.74rem; color:var(--white2); text-decoration:none; transition:all .2s; }
-.clink:hover { background:var(--purple); border-color:var(--purple); color:var(--white); transform:translateY(-2px); }
+.clink:hover { background:var(--purple); border-color:var(--purple); color:#fff; transform:translateY(-2px); }
 .clink.li:hover { background:#0a66c2; border-color:#0a66c2; }
 .clink.gh:hover { background:#24292e; border-color:#555; }
 .clink.ph:hover { background:#25d366; border-color:#25d366; }
@@ -346,6 +423,7 @@ footer { padding:20px 60px; background:var(--bg3); border-top:1px solid var(--bo
   .arbgrid{grid-template-columns:1fr;}
   #contact{padding:88px 0;}
   footer{padding:16px 20px;flex-direction:column;gap:6px;text-align:center;}
+  .theme-toggle .t-label{display:none;}
 }
 </style>
 </head>
@@ -369,6 +447,11 @@ footer { padding:20px 60px; background:var(--bg3); border-top:1px solid var(--bo
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-right">
+    <button class="theme-toggle" id="navThemeToggle" title="Toggle theme" aria-label="Toggle light/dark mode">
+      <span class="t-track"><span class="t-knob"></span></span>
+      <span class="t-icon" id="navThemeIcon">☀️</span>
+      <span class="t-label" id="navThemeLabel">Light</span>
+    </button>
     <button class="nav-cta" id="contactBtn">Contact Me</button>
   </div>
 </nav>
@@ -392,7 +475,12 @@ Computer Engineer and a<strong> Quantitative Algorithmic Trader at Deltamark LLP
 <div class="hmeta">📍 <span>Mumbai, India</span></div>
 </div>
 <div class="hero-btns">
-<a href="#quant" class="btn-solid">Quant Models</a>
+  <a href="#quant" class="btn-solid">Quant Models</a>
+  <!-- <button class="btn-theme" id="heroThemeToggle" title="Toggle theme" aria-label="Toggle light/dark mode">
+    <span class="bt-track"><span class="bt-knob"></span></span>
+    <span class="bt-icon" id="heroThemeIcon">☀️</span>
+    <span id="heroThemeLabel">Light Mode</span>
+  </button> -->
 </div>
 </div>
 <div>
@@ -506,6 +594,7 @@ fill="url(#lg2)"/>
     </div>
   </div>
 </section>
+
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="wrap">
@@ -569,7 +658,7 @@ fill="url(#lg2)"/>
   </div>
 </section>
 
-<!-- QUANT MODELS (trimmed: removed DNP, Greeks Engine, VaR Controls, PCR Analytics, Volatility Analytics) -->
+<!-- QUANT MODELS -->
 <section id="quant">
   <div class="wrap">
     <div class="stag rv">Quantitative Research</div>
@@ -589,63 +678,14 @@ fill="url(#lg2)"/>
     <div class="stag rv">Live Infrastructure</div>
     <h2 class="sh rv">Quantitative <em>Systems</em></h2>
     <div class="qsgrid">
-
-      <div class="qscard rv">
-        <div class="qsicon">⚖️</div>
-        <div class="qsname">Delta Neutral Positioning (DNP)</div>
-        <div class="qsdesc">Implemented a delta-neutral pricing model using DNP-based algorithms to estimate fair value levels for option sellers under varying market conditions.</div>
-        <span class="qstag">Risk Management</span>
-      </div>
-
-      <div class="qscard rv">
-        <div class="qsicon">🔢</div>
-        <div class="qsname">Options Greeks Engine</div>
-        <div class="qsdesc">Full suite of first and second-order Greeks — Delta, Gamma, Theta, Vega, and Rho — computed live across entire options chains for real-time position analysis and risk monitoring.</div>
-        <span class="qstag">Derivatives Analytics</span>
-      </div>
-
-      <div class="qscard rv">
-        <div class="qsicon">🛡️</div>
-        <div class="qsname">VaR-Based Risk Controls</div>
-        <div class="qsdesc">Value-at-Risk framework integrated directly into the live trading system. Enforces hard position limits and triggers automated hedges when portfolio risk thresholds are breached.</div>
-        <span class="qstag">Risk Framework</span>
-      </div>
-
-      <div class="qscard rv">
-        <div class="qsicon">📊</div>
-        <div class="qsname">Put-Call Ratio & OI Analytics</div>
-        <div class="qsdesc">Live Open Interest and PCR tracking across multiple strikes and expiries — used as a positioning and sentiment indicator including Max Pain.</div>
-        <span class="qstag">Sentiment Analysis</span>
-      </div>
-
-      <div class="qscard rv">
-        <div class="qsicon">📡</div>
-        <div class="qsname">WebSocket Live Data Pipeline</div>
-        <div class="qsdesc">Tick-by-tick real-time data streaming infrastructure built on Flask and WebSockets — feeds live prices, straddle values, and synthetic futures into every analytics layer simultaneously.</div>
-        <span class="qstag">Real-time Infrastructure</span>
-      </div>
-
-      <div class="qscard rv">
-        <div class="qsicon">📋</div>
-        <div class="qsname">Live P&L & Volatility Dashboard</div>
-        <div class="qsdesc">Internal Flask dashboard displaying live volatility metrics, open positions, and running P&L throughout each session — built for instant trade review and intraday decision support.</div>
-        <span class="qstag">Analytics Dashboard</span>
-      </div>
-
-      <div class="qscard rv">
-        <div class="qsicon">⚙️</div>
-        <div class="qsname">Order Management & Execution Layer</div>
-        <div class="qsdesc">Custom-built execution engine handling order validation, retry logic for failed trades, position sizing rules, and exposure limits — keeps all live trades within defined risk parameters.</div>
-        <span class="qstag">Execution Engine</span>
-      </div>
-
-      <div class="qscard rv">
-        <div class="qsicon">🔍</div>
-        <div class="qsname">Derivatives Market Monitor</div>
-        <div class="qsdesc">Real-time tracking of Index and Equity Derivatives symbols, Cash & Futures prices — built to surface key market structure signals across 200+ symbols simultaneously.</div>
-        <span class="qstag">Market Monitoring</span>
-      </div>
-
+      <div class="qscard rv"><div class="qsicon">⚖️</div><div class="qsname">Delta Neutral Positioning (DNP)</div><div class="qsdesc">Implemented a delta-neutral pricing model using DNP-based algorithms to estimate fair value levels for option sellers under varying market conditions.</div><span class="qstag">Risk Management</span></div>
+      <div class="qscard rv"><div class="qsicon">🔢</div><div class="qsname">Options Greeks Engine</div><div class="qsdesc">Full suite of first and second-order Greeks — Delta, Gamma, Theta, Vega, and Rho — computed live across entire options chains for real-time position analysis and risk monitoring.</div><span class="qstag">Derivatives Analytics</span></div>
+      <div class="qscard rv"><div class="qsicon">🛡️</div><div class="qsname">VaR-Based Risk Controls</div><div class="qsdesc">Value-at-Risk framework integrated directly into the live trading system. Enforces hard position limits and triggers automated hedges when portfolio risk thresholds are breached.</div><span class="qstag">Risk Framework</span></div>
+      <div class="qscard rv"><div class="qsicon">📊</div><div class="qsname">Put-Call Ratio & OI Analytics</div><div class="qsdesc">Live Open Interest and PCR tracking across multiple strikes and expiries — used as a positioning and sentiment indicator including Max Pain.</div><span class="qstag">Sentiment Analysis</span></div>
+      <div class="qscard rv"><div class="qsicon">📡</div><div class="qsname">WebSocket Live Data Pipeline</div><div class="qsdesc">Tick-by-tick real-time data streaming infrastructure built on Flask and WebSockets — feeds live prices, straddle values, and synthetic futures into every analytics layer simultaneously.</div><span class="qstag">Real-time Infrastructure</span></div>
+      <div class="qscard rv"><div class="qsicon">📋</div><div class="qsname">Live P&L & Volatility Dashboard</div><div class="qsdesc">Internal Flask dashboard displaying live volatility metrics, open positions, and running P&L throughout each session — built for instant trade review and intraday decision support.</div><span class="qstag">Analytics Dashboard</span></div>
+      <div class="qscard rv"><div class="qsicon">⚙️</div><div class="qsname">Order Management & Execution Layer</div><div class="qsdesc">Custom-built execution engine handling order validation, retry logic for failed trades, position sizing rules, and exposure limits — keeps all live trades within defined risk parameters.</div><span class="qstag">Execution Engine</span></div>
+      <div class="qscard rv"><div class="qsicon">🔍</div><div class="qsname">Derivatives Market Monitor</div><div class="qsdesc">Real-time tracking of Index and Equity Derivatives symbols, Cash & Futures prices — built to surface key market structure signals across 200+ symbols simultaneously.</div><span class="qstag">Market Monitoring</span></div>
     </div>
   </div>
 </section>
@@ -713,15 +753,12 @@ fill="url(#lg2)"/>
     <div class="stag rv">Proprietary Systems</div>
     <h2 class="sh rv">Trading <em>Algorithms</em></h2>
     <div class="algrid">
-      <!-- <div class="alcard rv"><div class="alnum">01</div><div class="alname">VIX Ranges Algo</div><div class="aldesc">Flask app using various broker APIs to print live strangles for options selling, with real-time trade alerts and mathematical libraries for precise volatility calculations and robust risk management.</div><span class="altag">Options Selling</span></div> -->
       <div class="alcard rv"><div class="alnum">01</div><div class="alname">Ratio Finder</div><div class="aldesc">Identifies and prints optimal strike prices for options ratio strategies, highlighting the best ratios relative to the current straddle value for real-time decision-making and trading.</div><span class="altag">Ratio Trading</span></div>
       <div class="alcard rv"><div class="alnum">02</div><div class="alname">Heikin Ashi and Renko Candle Charts</div><div class="aldesc">Converts candlestick data into Renko and Heikin Ashi charts for equity trading, using mathematical libraries to filter market noise, smooth price action, clarify trend direction, and support more profitable trade identification.</div><span class="altag">Chart Transformation</span></div>
       <div class="alcard rv"><div class="alnum">03</div><div class="alname">Golden Crossover (50 & 200 EMA)</div><div class="aldesc">50/200-day EMA crossover strategy achieving ~90% profitability on trading signals across timeframes. Incorporates a proprietary stop-loss and profit target framework.</div><span class="altag">~90% Win Rate</span></div>
-
       <div class="alcard rv"><div class="alnum">04</div><div class="alname">RSI Equity</div><div class="aldesc">RSI-based strategy with 20/80 and 30/70 threshold levels — specifically targets more extreme price conditions and aims for the highest-probability trade setups.</div><span class="altag">Technical Analysis</span></div>
       <div class="alcard rv"><div class="alnum">05</div><div class="alname">MACD Equity</div><div class="aldesc">MACD crossover strategy identifying trading opportunities across various indices and stocks in the derivatives market — built for high-probability trend-following.</div><span class="altag">Trend Following</span></div>
       <div class="alcard rv"><div class="alnum">06</div><div class="alname">RSI + MACD Combined</div><div class="aldesc">Combines RSI threshold levels with MACD crossovers to generate higher-confidence signals across multiple stocks simultaneously — reduces false entries significantly.</div><span class="altag">Multi-Indicator</span></div>
-
       <div class="alcard rv"><div class="alnum">07</div><div class="alname">Volume Trading Equity</div><div class="aldesc">Tracks average and daily traded volume to identify high-volume stocks for equity trading — improves performance by focusing on genuinely liquid markets.</div><span class="altag">Volume Analysis</span></div>
       <div class="alcard rv"><div class="alnum">08</div><div class="alname">Stock ATR</div><div class="aldesc">Calculates and tracks the Average True Range (ATR) across stocks for volatility analysis, position sizing decisions, and systematic backtesting workflows.</div><span class="altag">Volatility</span></div>
       <div class="alcard rv"><div class="alnum">09</div><div class="alname">Upper Circuit Scanner</div><div class="aldesc">Identifies stocks hitting upper circuit limits (5%, 10%, 15%, 20%) in real time — used for catching momentum trading opportunities early in the session.</div><span class="altag">Momentum</span></div>
@@ -729,7 +766,6 @@ fill="url(#lg2)"/>
   </div>
 </section>
 
-<!-- PROJECTS -->
 <!-- PROJECTS -->
 <section id="projects">
   <div class="wrap">
@@ -740,7 +776,7 @@ fill="url(#lg2)"/>
       <div class="pcard rv"><div class="pico">🌐</div><div class="pname">Autosocial Web App</div><div class="pdesc">A full-stack web application with responsive and dynamic UI plus a secure user authentication using OTP. RESTful APIs and complete database management for efficient data storage and retrieval.</div><div class="ptechs"><span>HTML/CSS</span><span>JavaScript</span><span>Node.js</span><span>MySQL</span></div></div>
       <div class="pcard rv"><div class="pico">🤖</div><div class="pname">AI & ML Projects</div><div class="pdesc">Handwriting Recognition, Loan Approval Prediction, and Image Quality Grading using Machine Learning models. Data preprocessing, feature engineering, model training, and evaluation using scikit-learn and TensorFlow.</div><div class="ptechs"><span>Python</span><span>ML</span><span>Classification</span></div></div>
       <div class="pcard rv"><div class="pico">🎙️</div><div class="pname">Virtual Assistant — Laura</div><div class="pdesc">Ai virtual assistant using Speech-to-Text for real-time voice interaction and responses. Implemented intent-based command parsing to automate tasks like opening apps, setting reminders, and retrieving information.</div><div class="ptechs"><span>Python</span><span>GUI</span><span>Android</span></div></div>
-      <div class="pcard rv"><div class="pico">🏦</div><div class="pname">Attendance & Banking Portal</div><div class="pdesc">An automated student attendance system with reporting and analytics for structured data management in C++. A full-stack banking application with account management, transaction processing, and secure authentication.</div><div class="ptechs"><span>C+</span><span>C++</span><span>Java</span></div></div>      
+      <div class="pcard rv"><div class="pico">🏦</div><div class="pname">Attendance & Banking Portal</div><div class="pdesc">An automated student attendance system with reporting and analytics for structured data management in C++. A full-stack banking application with account management, transaction processing, and secure authentication.</div><div class="ptechs"><span>C+</span><span>C++</span><span>Java</span></div></div>
       <div class="pcard rv"><div class="pico">📡</div><div class="pname">RC Car — Arduino</div><div class="pdesc">A wireless remote-controlled vehicle powered by an Arduino Uno, programmed in C++, including real-time motor control and wireless communication to receive control signals from a smartphone.</div><div class="ptechs"><span>C++</span><span>Arduino</span></div></div>
     </div>
   </div>
@@ -828,7 +864,34 @@ fill="url(#lg2)"/>
 </div>
 
 <script>
-/* POPUP */
+/* ── THEME TOGGLE ── */
+const html = document.documentElement;
+const STORAGE_KEY = 'yv-theme';
+
+function getTheme() {
+  return localStorage.getItem(STORAGE_KEY) || 'dark';
+}
+
+function applyTheme(t) {
+  html.setAttribute('data-theme', t);
+  localStorage.setItem(STORAGE_KEY, t);
+  const isDark = t === 'dark';
+  document.getElementById('navThemeIcon').textContent  = isDark ? '☀️' : '🌙';
+  document.getElementById('navThemeLabel').textContent = isDark ? 'Light' : 'Dark';
+  // document.getElementById('heroThemeIcon').textContent  = isDark ? '☀️' : '🌙';
+  // document.getElementById('heroThemeLabel').textContent = isDark ? 'Light Mode' : 'Dark Mode';
+}
+
+function toggleTheme() {
+  applyTheme(getTheme() === 'dark' ? 'light' : 'dark');
+}
+
+applyTheme(getTheme());
+
+document.getElementById('navThemeToggle').addEventListener('click', toggleTheme);
+// document.getElementById('heroThemeToggle').addEventListener('click', toggleTheme);
+
+/* ── POPUP ── */
 const emailPopup = document.getElementById('emailPopup');
 const openPopup = () => emailPopup.classList.add('show');
 const closePopup = () => emailPopup.classList.remove('show');
@@ -844,6 +907,7 @@ document.getElementById('copyEmailBtn').addEventListener('click', function() {
   });
 });
 
+/* ── CURSOR ── */
 const cd=document.getElementById('cd'),cr=document.getElementById('cr');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
@@ -852,10 +916,16 @@ document.querySelectorAll('a,button,.alcard,.sbox,.pill,.chip,.pcard,.ecard,.qca
   el.addEventListener('mouseenter',()=>document.body.classList.add('lh'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('lh'));
 });
+
+/* ── SCROLL PROGRESS ── */
 const prog=document.getElementById('prog');
 window.addEventListener('scroll',()=>{prog.style.width=(window.scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';});
+
+/* ── NAV SCROLL ── */
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>nav.classList.toggle('sc',window.scrollY>60));
+
+/* ── ACTIVE NAV LINKS ── */
 const sections=document.querySelectorAll('section[id]');
 const navLinks=document.querySelectorAll('.nav-links a');
 const sObs=new IntersectionObserver(entries=>{
@@ -868,14 +938,20 @@ const sObs=new IntersectionObserver(entries=>{
   });
 },{threshold:0.35});
 sections.forEach(s=>sObs.observe(s));
+
+/* ── SCROLL REVEAL ── */
 const obs=new IntersectionObserver(entries=>{
   entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*40);obs.unobserve(e.target);}});
 },{threshold:0.07,rootMargin:'0px 0px -20px 0px'});
 document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>obs.observe(el));
+
+/* ── SKILL BARS ── */
 const bo=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.style.transform=`scaleX(${e.target.dataset.w})`;bo.unobserve(e.target);}});
 },{threshold:0.4});
 document.querySelectorAll('.bfill').forEach(f=>bo.observe(f));
+
+/* ── COUNT UP ── */
 function ac(el){
   const t=parseInt(el.dataset.count),s=el.dataset.suffix||'';
   let st=null;
@@ -883,6 +959,8 @@ function ac(el){
 }
 const co=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){ac(e.target);co.unobserve(e.target);}});},{threshold:0.5});
 document.querySelectorAll('[data-count]').forEach(el=>co.observe(el));
+
+/* ── SMOOTH SCROLL ── */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const t=document.querySelector(a.getAttribute('href'));
